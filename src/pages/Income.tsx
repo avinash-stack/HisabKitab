@@ -9,8 +9,9 @@ import WeekStrip from "@/components/WeekStrip";
 import CategoryPills from "@/components/CategoryPills";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ChevronLeft, ChevronRight, Trash2, Edit2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, Trash2, Edit2, FileText } from "lucide-react";
 import { toast } from "sonner";
+import { exportIncomePDF } from "@/lib/pdfExport";
 
 export default function Income() {
   const navigate = useNavigate();
@@ -68,9 +69,17 @@ export default function Income() {
     Salary: "💼", Freelance: "💻", Investment: "📈", Business: "🏪", Rental: "🏠", Other: "💰",
   };
 
+  const exportPDF = () => {
+    if (!incomes?.length) { toast.info("No income to export"); return; }
+    exportIncomePDF(incomes, format(month, "MMMM yyyy"), total);
+    toast.success("PDF downloaded");
+  };
+
   return (
     <div className="px-4 pb-28 max-w-lg mx-auto">
-      <PageHeader title="Income" />
+      <PageHeader title="Income" action={
+        <button onClick={exportPDF} className="p-2 rounded-lg bg-secondary text-muted-foreground hover:text-primary" title="Export PDF"><FileText className="w-4 h-4" /></button>
+      } />
 
       {/* Month Picker */}
       <div className="flex items-center justify-between mt-3 mb-4">

@@ -9,8 +9,9 @@ import WeekStrip from "@/components/WeekStrip";
 import CategoryPills from "@/components/CategoryPills";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ChevronLeft, ChevronRight, Trash2, Edit2, Download } from "lucide-react";
+import { ChevronLeft, ChevronRight, Trash2, Edit2, Download, FileText } from "lucide-react";
 import { toast } from "sonner";
+import { exportExpensesPDF } from "@/lib/pdfExport";
 
 export default function Expenses() {
   const navigate = useNavigate();
@@ -79,6 +80,12 @@ export default function Expenses() {
     toast.success("CSV downloaded");
   };
 
+  const exportPDF = () => {
+    if (!expenses?.length) { toast.info("No expenses to export"); return; }
+    exportExpensesPDF(expenses, format(month, "MMMM yyyy"), total);
+    toast.success("PDF downloaded");
+  };
+
   const CATEGORY_ICONS: Record<string, string> = {
     Food: "🍔", Transport: "🚗", Shopping: "🛍️", Bills: "📄",
     Entertainment: "🎬", Health: "💊", Education: "📚", Other: "📦",
@@ -86,7 +93,12 @@ export default function Expenses() {
 
   return (
     <div className="px-4 pb-28 max-w-lg mx-auto">
-      <PageHeader title="Expenses" action={<button onClick={exportCSV} className="p-2 rounded-lg bg-secondary text-muted-foreground hover:text-foreground"><Download className="w-4 h-4" /></button>} />
+      <PageHeader title="Expenses" action={
+        <div className="flex items-center gap-1">
+          <button onClick={exportPDF} className="p-2 rounded-lg bg-secondary text-muted-foreground hover:text-primary" title="Export PDF"><FileText className="w-4 h-4" /></button>
+          <button onClick={exportCSV} className="p-2 rounded-lg bg-secondary text-muted-foreground hover:text-foreground" title="Export CSV"><Download className="w-4 h-4" /></button>
+        </div>
+      } />
 
       {/* Month Picker */}
       <div className="flex items-center justify-between mt-3 mb-4">

@@ -14,6 +14,11 @@ import Income from "@/pages/Income";
 import Overview from "@/pages/Overview";
 import RecurringExpenses from "@/pages/RecurringExpenses";
 import Profile from "@/pages/Profile";
+import AddSelect from "@/pages/AddSelect";
+import AddExpense from "@/pages/AddExpense";
+import AddIncome from "@/pages/AddIncome";
+import AddLoan from "@/pages/AddLoan";
+import AddDebt from "@/pages/AddDebt";
 import NotFound from "@/pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -42,6 +47,11 @@ function AppRoutes() {
         <Route path="/recurring" element={<RecurringExpenses />} />
         <Route path="/loans" element={<Loans />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/add" element={<AddSelect />} />
+        <Route path="/add/expense" element={<AddExpense />} />
+        <Route path="/add/income" element={<AddIncome />} />
+        <Route path="/add/loan" element={<AddLoan />} />
+        <Route path="/add/debt" element={<AddDebt />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <BottomNav />
