@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
 import { toast } from "sonner";
+import { endOfMonth, format, startOfMonth } from "date-fns";
 
 export type Income = {
   id: string;
@@ -30,13 +31,14 @@ export function useIncomes(month?: string) {
     queryFn: async () => {
       let q = supabase.from("incomes").select("*").order("income_date", { ascending: false });
       if (month) {
-        const start = `${month}-01`;
-        const end = `${month}-31`;
+        const monthDate = new Date(`${month}-15`);
+        const start = format(startOfMonth(monthDate), "yyyy-MM-dd");
+        const end = format(endOfMonth(monthDate), "yyyy-MM-dd");
         q = q.gte("income_date", start).lte("income_date", end);
       }
       const { data, error } = await q;
       if (error) throw error;
-      return data as Income[];
+      return (data || []).map(i => ({ ...i, amount: Number(i.amount) })) as Income[];
     },
   });
 

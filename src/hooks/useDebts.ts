@@ -34,7 +34,7 @@ export function useDebts() {
     queryFn: async () => {
       const { data, error } = await supabase.from("debts").select("*").order("created_at", { ascending: false });
       if (error) throw error;
-      return data as Debt[];
+      return (data || []).map(d => ({ ...d, amount: Number(d.amount) })) as Debt[];
     },
   });
 

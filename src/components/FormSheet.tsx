@@ -11,11 +11,13 @@ interface FormSheetProps {
 export default function FormSheet({ open, onOpenChange, title, children }: FormSheetProps) {
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="bottom" className="bg-card border-border rounded-t-2xl max-h-[85vh] overflow-y-auto">
-        <SheetHeader>
-          <SheetTitle className="font-display">{title}</SheetTitle>
-        </SheetHeader>
-        <div className="mt-4 space-y-4 pb-6">{children}</div>
+      <SheetContent side="bottom" className="bg-background border-border rounded-t-3xl max-h-[90vh] overflow-y-auto p-0">
+        <div className="px-5 pt-5 pb-2">
+          <SheetHeader>
+            <SheetTitle className="font-display text-lg text-center">{title}</SheetTitle>
+          </SheetHeader>
+        </div>
+        <div className="px-5 pb-8 space-y-5">{children}</div>
       </SheetContent>
     </Sheet>
   );
