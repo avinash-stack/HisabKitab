@@ -10,7 +10,10 @@ import Dashboard from "@/pages/Dashboard";
 import Expenses from "@/pages/Expenses";
 import Debts from "@/pages/Debts";
 import Loans from "@/pages/Loans";
+import Income from "@/pages/Income";
+import Overview from "@/pages/Overview";
 import RecurringExpenses from "@/pages/RecurringExpenses";
+import Profile from "@/pages/Profile";
 import NotFound from "@/pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -34,8 +37,11 @@ function AppRoutes() {
         <Route path="/" element={<Dashboard />} />
         <Route path="/expenses" element={<Expenses />} />
         <Route path="/debts" element={<Debts />} />
+        <Route path="/income" element={<Income />} />
+        <Route path="/overview" element={<Overview />} />
         <Route path="/recurring" element={<RecurringExpenses />} />
         <Route path="/loans" element={<Loans />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <BottomNav />

@@ -1,5 +1,3 @@
-import { useAuth } from "@/lib/auth";
-import { LogOut } from "lucide-react";
 import { ReactNode } from "react";
 
 export interface PageHeaderProps {
@@ -9,8 +7,6 @@ export interface PageHeaderProps {
 }
 
 export default function PageHeader({ title, subtitle, action }: PageHeaderProps) {
-  const { signOut, user } = useAuth();
-
   return (
     <div className="flex items-center justify-between pt-4 pb-2 px-1">
       <div className="flex items-center gap-3">
@@ -20,16 +16,7 @@ export default function PageHeader({ title, subtitle, action }: PageHeaderProps)
           {subtitle && <p className="text-xs text-muted-foreground">{subtitle}</p>}
         </div>
       </div>
-      <div className="flex items-center gap-2">
-        {action}
-        <button
-          onClick={signOut}
-          className="p-2 rounded-lg bg-secondary text-muted-foreground hover:text-foreground transition-colors"
-          title={`Logout (${user?.email || ""})`}
-        >
-          <LogOut className="w-4 h-4" />
-        </button>
-      </div>
+      {action && <div className="flex items-center gap-2">{action}</div>}
     </div>
   );
 }

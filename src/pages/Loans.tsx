@@ -1,4 +1,5 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { useLoans, LoanInput } from "@/hooks/useLoans";
 import PageHeader from "@/components/PageHeader";
 import FormSheet from "@/components/FormSheet";
@@ -11,6 +12,14 @@ export default function Loans() {
   const { data: loans, addLoan, updateLoan, deleteLoan } = useLoans();
 
   const [open, setOpen] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    if ((location.state as any)?.openForm) {
+      setTimeout(() => openAdd(), 300);
+      window.history.replaceState({}, "");
+    }
+  }, [location.state]);
   const [editId, setEditId] = useState<string | null>(null);
   const [form, setForm] = useState<LoanInput>({ loan_name: "", total_amount: 0, emi_amount: 0, tenure_months: 12, due_day: 1, remaining_balance: 0 });
 
@@ -73,9 +82,7 @@ export default function Loans() {
         {loans?.length === 0 && <p className="text-center text-sm text-muted-foreground py-8">No loans added</p>}
       </div>
 
-      <button onClick={openAdd} className="fixed bottom-20 right-4 w-14 h-14 rounded-full gradient-primary flex items-center justify-center shadow-lg z-40">
-        <Plus className="w-6 h-6 text-primary-foreground" />
-      </button>
+
 
       <FormSheet open={open} onOpenChange={setOpen} title={editId ? "Edit Loan" : "Add Loan"}>
         <Input placeholder="Loan name" value={form.loan_name} onChange={(e) => setForm({ ...form, loan_name: e.target.value })} className="h-12 bg-secondary" />

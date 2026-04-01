@@ -164,6 +164,147 @@ export type Database = {
         }
         Relationships: []
       }
+      profiles: {
+        Row: {
+          id: string
+          user_id: string
+          full_name: string | null
+          phone: string | null
+          currency: string
+          monthly_budget: number | null
+          avatar_url: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          full_name?: string | null
+          phone?: string | null
+          currency?: string
+          monthly_budget?: number | null
+          avatar_url?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          full_name?: string | null
+          phone?: string | null
+          currency?: string
+          monthly_budget?: number | null
+          avatar_url?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      income_sources: {
+        Row: {
+          id: string
+          user_id: string
+          name: string
+          icon: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          name: string
+          icon?: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          name?: string
+          icon?: string
+          created_at?: string
+        }
+        Relationships: []
+      }
+      incomes: {
+        Row: {
+          id: string
+          user_id: string
+          amount: number
+          source: string
+          note: string | null
+          income_date: string
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          amount: number
+          source: string
+          note?: string | null
+          income_date?: string
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          amount?: number
+          source?: string
+          note?: string | null
+          income_date?: string
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      expense_categories: {
+        Row: {
+          id: string
+          user_id: string
+          name: string
+          icon: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          name: string
+          icon?: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          name?: string
+          icon?: string
+          created_at?: string
+        }
+        Relationships: []
+      }
+      debt_contacts: {
+        Row: {
+          id: string
+          user_id: string
+          name: string
+          phone: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          name: string
+          phone?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          name?: string
+          phone?: string | null
+          created_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

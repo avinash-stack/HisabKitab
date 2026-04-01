@@ -1,6 +1,8 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { format } from "date-fns";
 import { useDebts, DebtInput } from "@/hooks/useDebts";
+import { useDebtContacts } from "@/hooks/useDebtContacts";
 import PageHeader from "@/components/PageHeader";
 import FormSheet from "@/components/FormSheet";
 import { Button } from "@/components/ui/button";
@@ -10,8 +12,17 @@ import { Plus, Trash2, Edit2, ArrowUpRight, ArrowDownRight, CheckCircle2 } from 
 
 export default function Debts() {
   const { data: debts, addDebt, updateDebt, deleteDebt } = useDebts();
+  const { data: contacts } = useDebtContacts();
 
   const [open, setOpen] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    if ((location.state as any)?.openForm) {
+      setTimeout(() => openAdd(), 300);
+      window.history.replaceState({}, "");
+    }
+  }, [location.state]);
   const [editId, setEditId] = useState<string | null>(null);
   const [form, setForm] = useState<DebtInput>({ person_name: "", amount: 0, type: "given", note: "" });
 
@@ -73,12 +84,17 @@ export default function Debts() {
         {debts?.length === 0 && <p className="text-center text-sm text-muted-foreground py-8">No debts recorded</p>}
       </div>
 
-      <button onClick={openAdd} className="fixed bottom-20 right-4 w-14 h-14 rounded-full gradient-primary flex items-center justify-center shadow-lg z-40">
-        <Plus className="w-6 h-6 text-primary-foreground" />
-      </button>
+
 
       <FormSheet open={open} onOpenChange={setOpen} title={editId ? "Edit Debt" : "Add Debt"}>
-        <Input placeholder="Person name" value={form.person_name} onChange={(e) => setForm({ ...form, person_name: e.target.value })} className="h-12 bg-secondary" />
+        <Input placeholder="Person name" value={form.person_name} onChange={(e) => setForm({ ...form, person_name: e.target.value })} className="h-12 bg-secondary" list="contact-suggestions" />
+        {contacts && contacts.length > 0 && (
+          <datalist id="contact-suggestions">
+            {contacts.map((c) => (
+              <option key={c.id} value={c.name} />
+            ))}
+          </datalist>
+        )}
         <Input type="number" placeholder="Amount" value={form.amount || ""} onChange={(e) => setForm({ ...form, amount: Number(e.target.value) })} className="h-12 bg-secondary" />
         <Select value={form.type} onValueChange={(v) => setForm({ ...form, type: v as "given" | "taken" })}>
           <SelectTrigger className="h-12 bg-secondary"><SelectValue /></SelectTrigger>

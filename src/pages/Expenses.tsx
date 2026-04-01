@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { format, subMonths, addMonths } from "date-fns";
 import { useExpenses, ExpenseInput } from "@/hooks/useExpenses";
+import { useExpenseCategories } from "@/hooks/useExpenseCategories";
 import PageHeader from "@/components/PageHeader";
 import FormSheet from "@/components/FormSheet";
 import { Button } from "@/components/ui/button";
@@ -9,20 +11,28 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Plus, ChevronLeft, ChevronRight, Trash2, Edit2, Download } from "lucide-react";
 import { toast } from "sonner";
 
-const CATEGORIES = ["Food", "Transport", "Shopping", "Bills", "Entertainment", "Health", "Education", "Other"];
-
 export default function Expenses() {
   const [month, setMonth] = useState(new Date());
   const monthStr = format(month, "yyyy-MM");
   const { data: expenses, addExpense, updateExpense, deleteExpense } = useExpenses(monthStr);
+  const { categories } = useExpenseCategories();
+  const categoryNames = categories.map(c => c.name);
 
   const [open, setOpen] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    if ((location.state as any)?.openForm) {
+      setTimeout(() => openAdd(), 300);
+      window.history.replaceState({}, "");
+    }
+  }, [location.state]);
   const [editId, setEditId] = useState<string | null>(null);
-  const [form, setForm] = useState<ExpenseInput>({ amount: 0, category: "Food", note: "", expense_date: format(new Date(), "yyyy-MM-dd") });
+  const [form, setForm] = useState<ExpenseInput>({ amount: 0, category: "", note: "", expense_date: format(new Date(), "yyyy-MM-dd") });
 
   const openAdd = () => {
     setEditId(null);
-    setForm({ amount: 0, category: "Food", note: "", expense_date: format(new Date(), "yyyy-MM-dd") });
+    setForm({ amount: 0, category: categoryNames[0] || "Other", note: "", expense_date: format(new Date(), "yyyy-MM-dd") });
     setOpen(true);
   };
 
@@ -100,10 +110,8 @@ export default function Expenses() {
         {expenses?.length === 0 && <p className="text-center text-sm text-muted-foreground py-8">No expenses this month</p>}
       </div>
 
-      {/* FAB */}
-      <button onClick={openAdd} className="fixed bottom-20 right-4 w-14 h-14 rounded-full gradient-primary flex items-center justify-center shadow-lg z-40">
-        <Plus className="w-6 h-6 text-primary-foreground" />
-      </button>
+
+
 
       {/* Form */}
       <FormSheet open={open} onOpenChange={setOpen} title={editId ? "Edit Expense" : "Add Expense"}>
@@ -111,7 +119,7 @@ export default function Expenses() {
         <Select value={form.category} onValueChange={(v) => setForm({ ...form, category: v })}>
           <SelectTrigger className="h-12 bg-secondary"><SelectValue /></SelectTrigger>
           <SelectContent>
-            {CATEGORIES.map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+            {categoryNames.map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}
           </SelectContent>
         </Select>
         <Input placeholder="Note (optional)" value={form.note || ""} onChange={(e) => setForm({ ...form, note: e.target.value })} className="h-12 bg-secondary" />
