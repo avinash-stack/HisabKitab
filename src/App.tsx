@@ -32,33 +32,51 @@ function AppRoutes() {
 
   // 🔥 Deep link handler (Google Login fix)
   useEffect(() => {
-    const listener = CapacitorApp.addListener("appUrlOpen", async (event) => {
+    let listenerHandle: { remove: () => void } | null = null;
+
+    CapacitorApp.addListener("appUrlOpen", async (event) => {
       const url = event.url;
+      console.log("🔗 Deep link received:", url);
 
       if (url.includes("login-callback")) {
-        const hash = url.split("#")[1];
+        // Try fragment (#) first (implicit grant flow)
+        let tokenString = url.split("#")[1];
 
-        if (hash) {
-          const params = new URLSearchParams(hash);
+        // Fallback to query params (?) if no fragment
+        if (!tokenString) {
+          const queryPart = url.split("?")[1];
+          if (queryPart) tokenString = queryPart;
+        }
 
+        if (tokenString) {
+          const params = new URLSearchParams(tokenString);
           const access_token = params.get("access_token");
           const refresh_token = params.get("refresh_token");
 
+          console.log("🔑 Tokens found:", !!access_token, !!refresh_token);
+
           if (access_token && refresh_token) {
-            await supabase.auth.setSession({
+            const { error } = await supabase.auth.setSession({
               access_token,
               refresh_token,
             });
 
-            // Optional: redirect after login
-            window.location.href = "/";
+            if (error) {
+              console.error("❌ setSession error:", error.message);
+            } else {
+              console.log("✅ Session set successfully");
+            }
+            // No redirect needed — AuthProvider's onAuthStateChange
+            // will detect the new session and update the UI automatically
           }
         }
       }
+    }).then((handle) => {
+      listenerHandle = handle;
     });
 
     return () => {
-      listener.remove();
+      listenerHandle?.remove();
     };
   }, []);
 
