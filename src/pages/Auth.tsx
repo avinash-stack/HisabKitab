@@ -63,7 +63,7 @@ export default function Auth() {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: window.location.origin,
+        redirectTo: "com.avinash.hisabkitab://login-callback",
       }
     });
     if (error) {
@@ -101,18 +101,16 @@ export default function Auth() {
         <div className="flex gap-2">
           <button
             onClick={() => { setMode("email"); setOtpSent(false); setMagicLinkSent(false); }}
-            className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-              mode === "email" ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground"
-            }`}
+            className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-medium transition-colors ${mode === "email" ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground"
+              }`}
           >
             <Mail className="w-4 h-4" />
             Email
           </button>
           <button
             onClick={() => { setMode("phone"); setOtpSent(false); setMagicLinkSent(false); }}
-            className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-              mode === "phone" ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground"
-            }`}
+            className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-medium transition-colors ${mode === "phone" ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground"
+              }`}
           >
             <Phone className="w-4 h-4" />
             Phone
