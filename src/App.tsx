@@ -1,5 +1,9 @@
+import { useEffect } from "react";
+import { App as CapacitorApp } from "@capacitor/app";
+import { supabase } from "@/integrations/supabase/client";
+
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -25,6 +29,38 @@ const queryClient = new QueryClient();
 
 function AppRoutes() {
   const { user, loading } = useAuth();
+
+  // 🔥 Deep link handler (Google Login fix)
+  useEffect(() => {
+    const listener = CapacitorApp.addListener("appUrlOpen", async (event) => {
+      const url = event.url;
+
+      if (url.includes("login-callback")) {
+        const hash = url.split("#")[1];
+
+        if (hash) {
+          const params = new URLSearchParams(hash);
+
+          const access_token = params.get("access_token");
+          const refresh_token = params.get("refresh_token");
+
+          if (access_token && refresh_token) {
+            await supabase.auth.setSession({
+              access_token,
+              refresh_token,
+            });
+
+            // Optional: redirect after login
+            window.location.href = "/";
+          }
+        }
+      }
+    });
+
+    return () => {
+      listener.remove();
+    };
+  }, []);
 
   if (loading) {
     return (
