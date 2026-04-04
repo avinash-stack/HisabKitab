@@ -9,14 +9,9 @@ const tabs = [
   { path: "/profile", label: "Profile", icon: UserCircle },
 ];
 
-// Hide bottom nav on add pages
-const HIDE_ON = ["/add", "/add/expense", "/add/income", "/add/loan", "/add/debt"];
-
 export default function BottomNav() {
   const location = useLocation();
   const navigate = useNavigate();
-
-  if (HIDE_ON.some(p => location.pathname.startsWith(p))) return null;
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 bg-card border-t border-border safe-area-bottom">
