@@ -11,6 +11,8 @@ export type Profile = {
   currency: string;
   monthly_budget: number | null;
   avatar_url: string | null;
+  subscription_tier: string;
+  subscription_expires_at: string | null;
 };
 
 export type ProfileInput = {
