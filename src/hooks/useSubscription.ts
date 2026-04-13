@@ -28,11 +28,13 @@ const FEATURE_ACCESS: Record<Feature, SubscriptionTier> = {
 export const FREE_LIMITS = {
   entries_per_month: 15,
   debt_contacts: 3,
+  custom_categories: 0,
 };
 
 /** Pro tier limits */
 export const PRO_LIMITS = {
-  debt_contacts: 5,
+  debt_contacts: 15,
+  custom_categories: 5,
 };
 
 const TIER_RANK: Record<SubscriptionTier, number> = {
@@ -72,6 +74,12 @@ export function useSubscription() {
     return FREE_LIMITS.entries_per_month;
   };
 
+  const getCustomCategoryLimit = (): number | null => {
+    if (isPremium) return null; // unlimited
+    if (isProOrAbove) return PRO_LIMITS.custom_categories;
+    return FREE_LIMITS.custom_categories;
+  };
+
   return {
     tier,
     isProOrAbove,
@@ -81,5 +89,6 @@ export function useSubscription() {
     canAccessFeature,
     getDebtContactLimit,
     getEntryLimit,
+    getCustomCategoryLimit,
   };
 }

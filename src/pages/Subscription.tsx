@@ -27,7 +27,7 @@ const features: PlanFeature[] = [
     label: "Debt Tracking",
     icon: <Users className="w-4 h-4" />,
     free: "3 contacts",
-    pro: "5 contacts",
+    pro: "15 contacts",
     premium: "Unlimited",
   },
   {
@@ -62,8 +62,8 @@ const features: PlanFeature[] = [
     label: "Custom Categories",
     icon: <Tag className="w-4 h-4" />,
     free: false,
-    pro: true,
-    premium: true,
+    pro: "5 categories",
+    premium: "Unlimited",
   },
   {
     label: "Priority Support",
@@ -151,13 +151,12 @@ export default function Subscription() {
           return (
             <div
               key={plan.tier}
-              className={`relative overflow-hidden rounded-2xl border transition-all duration-300 animate-fade-in ${
-                isActive
-                  ? "border-primary shadow-lg shadow-primary/10"
-                  : plan.popular
-                    ? "border-primary/30"
-                    : "border-border"
-              }`}
+              className={`relative overflow-hidden rounded-2xl border transition-all duration-300 animate-fade-in ${isActive
+                ? "border-primary shadow-lg shadow-primary/10"
+                : plan.popular
+                  ? "border-primary/30"
+                  : "border-border"
+                }`}
               style={{ animationDelay: `${idx * 100}ms` }}
             >
               {/* Popular badge */}
@@ -202,14 +201,12 @@ export default function Subscription() {
                     const val = f[plan.tier];
                     return (
                       <div key={f.label} className="flex items-center gap-2.5">
-                        <div className={`w-5 h-5 flex items-center justify-center shrink-0 ${
-                          val === false ? "text-muted-foreground/30" : "text-primary"
-                        }`}>
+                        <div className={`w-5 h-5 flex items-center justify-center shrink-0 ${val === false ? "text-muted-foreground/30" : "text-primary"
+                          }`}>
                           {f.icon}
                         </div>
-                        <span className={`text-xs flex-1 ${
-                          val === false ? "text-muted-foreground/50 line-through" : "text-foreground"
-                        }`}>
+                        <span className={`text-xs flex-1 ${val === false ? "text-muted-foreground/50 line-through" : "text-foreground"
+                          }`}>
                           {f.label}
                         </span>
                         <FeatureValue value={val} />
