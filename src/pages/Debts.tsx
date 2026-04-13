@@ -147,7 +147,7 @@ export default function Debts() {
     return (
       <div className="px-4 pb-28 max-w-lg mx-auto">
         {/* Back Header */}
-        <div className="flex items-center gap-3 pt-4 pb-3">
+        <div className="flex items-center gap-3 safe-area-top pb-3">
           <button onClick={() => setSelectedPerson(null)} className="p-2 rounded-xl bg-secondary text-muted-foreground hover:text-foreground transition-colors">
             <ArrowLeft className="w-5 h-5" />
           </button>
@@ -157,9 +157,9 @@ export default function Debts() {
           </div>
           <div className="flex items-center gap-2">
             <button
-              onClick={() => {
+              onClick={async () => {
                 if (!personEntries.length) { toast.info("No entries to export"); return; }
-                exportDebtLedgerPDF(selectedPerson, personEntries, { given: personSummary?.given || 0, taken: personSummary?.taken || 0, net: personSummary?.net || 0 });
+                await exportDebtLedgerPDF(selectedPerson, personEntries, { given: personSummary?.given || 0, taken: personSummary?.taken || 0, net: personSummary?.net || 0 });
                 toast.success("Ledger PDF downloaded");
               }}
               className="p-2 rounded-xl bg-secondary text-muted-foreground hover:text-primary transition-colors"

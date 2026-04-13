@@ -1,12 +1,12 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { LayoutDashboard, BarChart3, Users, UserCircle, Plus } from "lucide-react";
+import { LayoutDashboard, BarChart3, Users, Landmark, Plus } from "lucide-react";
 
 const tabs = [
   { path: "/", label: "Home", icon: LayoutDashboard },
   { path: "/overview", label: "Overview", icon: BarChart3 },
   { path: "__fab__", label: "", icon: Plus },
   { path: "/debts", label: "Debts", icon: Users },
-  { path: "/profile", label: "Profile", icon: UserCircle },
+  { path: "/loans", label: "Loans", icon: Landmark },
 ];
 
 export default function BottomNav() {

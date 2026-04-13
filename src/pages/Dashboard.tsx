@@ -7,7 +7,7 @@ import { useDebts } from "@/hooks/useDebts";
 import { useLoans } from "@/hooks/useLoans";
 import { useProfile } from "@/hooks/useProfile";
 import { useAuth } from "@/lib/auth";
-import { ArrowDownLeft, ArrowUpRight, MoreHorizontal, ChevronRight } from "lucide-react";
+import { ArrowDownLeft, ArrowUpRight, MoreHorizontal, ChevronRight, Wallet, Landmark, Receipt, RefreshCw } from "lucide-react";
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -57,18 +57,33 @@ export default function Dashboard() {
     Salary: "💼", Freelance: "💻", Investment: "📈", Business: "🏪", Rental: "🏠",
   };
 
+  const quickAccess = [
+    { label: "Income", icon: Wallet, path: "/income", color: "text-emerald-500", bg: "bg-emerald-500/10" },
+    { label: "Expenses", icon: Receipt, path: "/expenses", color: "text-orange-500", bg: "bg-orange-500/10" },
+    { label: "Loans", icon: Landmark, path: "/loans", color: "text-blue-500", bg: "bg-blue-500/10" },
+    { label: "Recurring", icon: RefreshCw, path: "/recurring", color: "text-purple-500", bg: "bg-purple-500/10" },
+  ];
+
   return (
     <div className="px-4 pb-28 max-w-lg mx-auto">
       {/* Header */}
-      <div className="flex items-center justify-between pt-4 pb-3">
+      <div className="flex items-center justify-between safe-area-top pb-3">
         <div className="flex items-center gap-3">
-          <img src="/logo.png" alt="Logo" className="w-9 h-9 object-contain" />
+          <img
+            src="/logo.png"
+            alt="Logo"
+            className="w-9 h-9 object-contain cursor-pointer"
+            onClick={() => navigate("/")}
+          />
           <div>
             <p className="text-xs text-muted-foreground">Welcome back</p>
             <h1 className="text-base font-bold font-display">{displayName}</h1>
           </div>
         </div>
-        <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-primary/20">
+        <button
+          onClick={() => navigate("/profile")}
+          className="w-10 h-10 rounded-full overflow-hidden border-2 border-primary/20 transition-transform hover:scale-105 active:scale-95"
+        >
           {avatarUrl ? (
             <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
           ) : (
@@ -76,7 +91,7 @@ export default function Dashboard() {
               {displayName.charAt(0).toUpperCase()}
             </div>
           )}
-        </div>
+        </button>
       </div>
 
       {/* Hero Balance Card */}
@@ -118,6 +133,23 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Quick Access Grid */}
+      <div className="grid grid-cols-4 gap-2 mt-4">
+        {quickAccess.map(({ label, icon: Icon, path, color, bg }) => (
+          <button
+            key={path}
+            onClick={() => navigate(path)}
+            className="flex flex-col items-center gap-1.5 py-3 rounded-xl bg-card card-shadow
+                       hover:bg-secondary/50 active:scale-[0.96] transition-all duration-200"
+          >
+            <div className={`w-10 h-10 rounded-xl ${bg} flex items-center justify-center`}>
+              <Icon className={`w-5 h-5 ${color}`} />
+            </div>
+            <span className="text-[11px] font-medium text-muted-foreground">{label}</span>
+          </button>
+        ))}
       </div>
 
       {/* Transactions Header */}

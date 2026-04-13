@@ -173,6 +173,8 @@ export type Database = {
           currency: string
           monthly_budget: number | null
           avatar_url: string | null
+          subscription_tier: string
+          subscription_expires_at: string | null
           created_at: string
           updated_at: string
         }
@@ -184,6 +186,8 @@ export type Database = {
           currency?: string
           monthly_budget?: number | null
           avatar_url?: string | null
+          subscription_tier?: string
+          subscription_expires_at?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -195,6 +199,8 @@ export type Database = {
           currency?: string
           monthly_budget?: number | null
           avatar_url?: string | null
+          subscription_tier?: string
+          subscription_expires_at?: string | null
           created_at?: string
           updated_at?: string
         }

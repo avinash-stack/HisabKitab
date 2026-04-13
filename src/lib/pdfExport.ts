@@ -1,6 +1,9 @@
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { format } from "date-fns";
+import { Capacitor } from "@capacitor/core";
+import { Filesystem, Directory } from "@capacitor/filesystem";
+import { Share } from "@capacitor/share";
 
 const PURPLE = [124, 58, 237] as const;
 const ORANGE = [234, 108, 72] as const;
@@ -37,7 +40,36 @@ function getFinalY(doc: jsPDF): number {
   return (doc as any).lastAutoTable?.finalY ?? 40;
 }
 
-export function exportExpensesPDF(
+/**
+ * Save PDF — on native mobile uses Capacitor Filesystem + Share,
+ * on web falls back to browser download.
+ */
+async function savePDF(doc: jsPDF, filename: string) {
+  if (Capacitor.isNativePlatform()) {
+    try {
+      const base64 = doc.output("datauristring").split(",")[1];
+      const result = await Filesystem.writeFile({
+        path: filename,
+        data: base64,
+        directory: Directory.Cache,
+      });
+
+      await Share.share({
+        title: filename,
+        url: result.uri,
+        dialogTitle: "Save or Share PDF",
+      });
+    } catch (err) {
+      console.error("Native PDF save error:", err);
+      // Fallback to browser download
+      doc.save(filename);
+    }
+  } else {
+    doc.save(filename);
+  }
+}
+
+export async function exportExpensesPDF(
   expenses: { amount: number; category: string; note: string | null; expense_date: string }[],
   monthLabel: string,
   total: number
@@ -91,10 +123,10 @@ export function exportExpensesPDF(
     margin: { left: 14, right: 14 },
   });
 
-  doc.save(`expenses-${monthLabel.replace(/\s/g, "-").toLowerCase()}.pdf`);
+  await savePDF(doc, `expenses-${monthLabel.replace(/\s/g, "-").toLowerCase()}.pdf`);
 }
 
-export function exportIncomePDF(
+export async function exportIncomePDF(
   incomes: { amount: number; source: string; note: string | null; income_date: string }[],
   monthLabel: string,
   total: number
@@ -148,10 +180,10 @@ export function exportIncomePDF(
     margin: { left: 14, right: 14 },
   });
 
-  doc.save(`income-${monthLabel.replace(/\s/g, "-").toLowerCase()}.pdf`);
+  await savePDF(doc, `income-${monthLabel.replace(/\s/g, "-").toLowerCase()}.pdf`);
 }
 
-export function exportDebtLedgerPDF(
+export async function exportDebtLedgerPDF(
   personName: string,
   entries: { amount: number; type: "given" | "taken"; status: "pending" | "paid"; note: string | null; due_date: string | null; created_at: string }[],
   summary: { given: number; taken: number; net: number }
@@ -215,5 +247,5 @@ export function exportDebtLedgerPDF(
     margin: { left: 14, right: 14 },
   });
 
-  doc.save(`ledger-${personName.replace(/\s/g, "-").toLowerCase()}.pdf`);
+  await savePDF(doc, `ledger-${personName.replace(/\s/g, "-").toLowerCase()}.pdf`);
 }

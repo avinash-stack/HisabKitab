@@ -80,9 +80,9 @@ export default function Expenses() {
     toast.success("CSV downloaded");
   };
 
-  const exportPDF = () => {
+  const exportPDF = async () => {
     if (!expenses?.length) { toast.info("No expenses to export"); return; }
-    exportExpensesPDF(expenses, format(month, "MMMM yyyy"), total);
+    await exportExpensesPDF(expenses, format(month, "MMMM yyyy"), total);
     toast.success("PDF downloaded");
   };
 

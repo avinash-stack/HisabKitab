@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/lib/auth";
 import { useProfile, ProfileInput } from "@/hooks/useProfile";
 import { useExpenseCategories } from "@/hooks/useExpenseCategories";
@@ -11,8 +12,9 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import {
   LogOut, Plus, Trash2, Tag, Users, UserCircle, Sparkles,
-  ChevronRight, Camera, Wallet, Edit3, X
+  ChevronRight, Camera, Wallet, Edit3, X, Crown
 } from "lucide-react";
+import { useSubscription } from "@/hooks/useSubscription";
 
 const EMOJI_OPTIONS = ["🍔", "🚗", "🛍️", "📄", "🎬", "💊", "📚", "📦", "🏠", "✈️", "☕", "💰", "🎮", "👕", "🐾", "💡"];
 const SOURCE_EMOJI_OPTIONS = ["💼", "💻", "📈", "🏪", "🏠", "💰", "🎯", "📱", "🎨", "🔧"];
@@ -20,6 +22,7 @@ const SOURCE_EMOJI_OPTIONS = ["💼", "💻", "📈", "🏪", "🏠", "💰", "�
 type ActiveSection = null | "profile" | "categories" | "contacts" | "income_sources";
 
 export default function Profile() {
+  const navigate = useNavigate();
   const { signOut, user } = useAuth();
   const { data: profile, upsertProfile } = useProfile();
   const {
@@ -148,6 +151,9 @@ export default function Profile() {
     { key: "income_sources" as const, icon: Wallet, label: "Income Sources", subtitle: `${hasCustomSources ? rawSources!.length : sources.length} sources`, color: "text-warning" },
   ];
 
+  const { tier } = useSubscription();
+  const tierLabel = tier === "premium" ? "Premium" : tier === "pro" ? "Pro" : "Free";
+
   return (
     <div className="px-4 pb-24 max-w-lg mx-auto">
       <PageHeader title="Profile" />
@@ -216,6 +222,24 @@ export default function Profile() {
           </button>
         ))}
       </div>
+
+      {/* Subscription Card */}
+      <button
+        onClick={() => navigate("/subscription")}
+        className="w-full mt-4 flex items-center gap-3 p-4 rounded-xl border border-primary/20 bg-gradient-to-r from-primary/5 to-accent/5
+                   hover:from-primary/10 hover:to-accent/10 active:scale-[0.98] transition-all duration-200"
+      >
+        <div className="w-10 h-10 rounded-lg gradient-primary flex items-center justify-center">
+          <Crown className="w-5 h-5 text-white" />
+        </div>
+        <div className="flex-1 text-left">
+          <p className="text-sm font-medium">Subscription</p>
+          <p className="text-xs text-muted-foreground">
+            Current plan: <span className="font-semibold text-primary">{tierLabel}</span>
+          </p>
+        </div>
+        <ChevronRight className="w-4 h-4 text-muted-foreground" />
+      </button>
 
       {/* Expandable Sections */}
       {activeSection === "profile" && (

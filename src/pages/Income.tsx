@@ -69,9 +69,9 @@ export default function Income() {
     Salary: "💼", Freelance: "💻", Investment: "📈", Business: "🏪", Rental: "🏠", Other: "💰",
   };
 
-  const exportPDF = () => {
+  const exportPDF = async () => {
     if (!incomes?.length) { toast.info("No income to export"); return; }
-    exportIncomePDF(incomes, format(month, "MMMM yyyy"), total);
+    await exportIncomePDF(incomes, format(month, "MMMM yyyy"), total);
     toast.success("PDF downloaded");
   };
 

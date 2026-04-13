@@ -42,7 +42,7 @@ export default function AddSelect() {
   return (
     <div className="min-h-screen bg-background px-4 pb-8">
       {/* Header */}
-      <div className="flex items-center gap-3 pt-4 pb-6">
+      <div className="flex items-center gap-3 safe-area-top pb-6">
         <button
           onClick={() => navigate(-1)}
           className="p-2 rounded-xl bg-secondary text-muted-foreground hover:text-foreground transition-colors"
