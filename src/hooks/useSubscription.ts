@@ -46,7 +46,7 @@ const TIER_RANK: Record<SubscriptionTier, number> = {
 /**
  * Temporary behavior (until pricing is launched):
  * - Everyone gets Pro access for Pro-tier features.
- * - Premium features remain restricted to users set to `premium` from backend.
+ * - Premium features are disabled for everyone.
  */
 const PRICING_LAUNCHED = false;
 
@@ -65,9 +65,7 @@ export function useSubscription() {
   // Access tier can be temporarily elevated until pricing is implemented.
   const accessTier: SubscriptionTier = PRICING_LAUNCHED
     ? tier
-    : tier === "premium"
-      ? "premium"
-      : "pro";
+    : "pro";
 
   const isProOrAbove = TIER_RANK[accessTier] >= TIER_RANK.pro;
   const isPremium = accessTier === "premium";

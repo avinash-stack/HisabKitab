@@ -59,14 +59,14 @@ export default function SubscriptionGate({
       </div>
       <h3 className="text-lg font-bold font-display mb-1">Premium Feature</h3>
       <p className="text-sm text-muted-foreground text-center mb-4 max-w-xs">
-        {message || "This feature is available on Pro and Premium plans. Upgrade to access it."}
+        {message || "This feature is currently unavailable."}
       </p>
       <button
         onClick={() => navigate("/subscription")}
         className="px-6 py-3 rounded-2xl gradient-primary text-white text-sm font-semibold
                    shadow-lg transition-all duration-200 hover:scale-105 active:scale-95"
       >
-        Upgrade Now
+        View Plans
       </button>
     </div>
   );
