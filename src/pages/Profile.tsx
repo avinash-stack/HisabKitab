@@ -152,7 +152,7 @@ export default function Profile() {
   ];
 
   const { tier } = useSubscription();
-  const tierLabel = tier === "premium" ? "Premium" : tier === "pro" ? "Pro" : "Free";
+  const tierLabel = tier === "premium" ? "Premium" : tier === "pro" ? "Pro" : "Freemium";
 
   return (
     <div className="px-4 pb-24 max-w-lg mx-auto">

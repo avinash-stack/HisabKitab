@@ -76,7 +76,7 @@ export async function encryptData(data: any, key: CryptoKey): Promise<string> {
     encodedData
   );
 
-  const ivBase64 = arrayBufferToBase64(iv);
+  const ivBase64 = arrayBufferToBase64(iv.buffer as ArrayBuffer);
   const cipherBase64 = arrayBufferToBase64(ciphertext);
 
   return `${ivBase64}:${cipherBase64}`;

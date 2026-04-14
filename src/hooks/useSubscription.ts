@@ -43,6 +43,13 @@ const TIER_RANK: Record<SubscriptionTier, number> = {
   premium: 2,
 };
 
+/**
+ * Temporary behavior (until pricing is launched):
+ * - Everyone gets Pro access for Pro-tier features.
+ * - Premium features remain restricted to users set to `premium` from backend.
+ */
+const PRICING_LAUNCHED = false;
+
 export function useSubscription() {
   const { data: profile } = useProfile();
 
@@ -55,12 +62,19 @@ export function useSubscription() {
   const isExpired = expiresAt ? expiresAt < new Date() : false;
   const tier: SubscriptionTier = isExpired ? "free" : rawTier;
 
-  const isProOrAbove = TIER_RANK[tier] >= TIER_RANK.pro;
-  const isPremium = tier === "premium";
+  // Access tier can be temporarily elevated until pricing is implemented.
+  const accessTier: SubscriptionTier = PRICING_LAUNCHED
+    ? tier
+    : tier === "premium"
+      ? "premium"
+      : "pro";
+
+  const isProOrAbove = TIER_RANK[accessTier] >= TIER_RANK.pro;
+  const isPremium = accessTier === "premium";
 
   const canAccessFeature = (feature: Feature): boolean => {
     const requiredTier = FEATURE_ACCESS[feature];
-    return TIER_RANK[tier] >= TIER_RANK[requiredTier];
+    return TIER_RANK[accessTier] >= TIER_RANK[requiredTier];
   };
 
   const getDebtContactLimit = (): number | null => {

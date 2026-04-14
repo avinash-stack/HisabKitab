@@ -238,6 +238,7 @@ export type Database = {
       }
       incomes: {
         Row: {
+          encrypted_payload?: string | null
           id: string
           user_id: string
           amount: number
@@ -248,6 +249,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          encrypted_payload?: string | null
           id?: string
           user_id: string
           amount: number
@@ -258,6 +260,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          encrypted_payload?: string | null
           id?: string
           user_id?: string
           amount?: number

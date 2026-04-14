@@ -14,11 +14,6 @@ const DEFAULT_CATEGORIES = [
   { name: "Food", icon: "🍔" },
   { name: "Transport", icon: "🚗" },
   { name: "Shopping", icon: "🛍️" },
-  { name: "Bills", icon: "📄" },
-  { name: "Entertainment", icon: "🎬" },
-  { name: "Health", icon: "💊" },
-  { name: "Education", icon: "📚" },
-  { name: "Other", icon: "📦" },
 ];
 
 export { DEFAULT_CATEGORIES };

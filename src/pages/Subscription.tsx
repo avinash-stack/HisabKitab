@@ -88,7 +88,7 @@ type PlanCard = {
 const plans: PlanCard[] = [
   {
     tier: "free",
-    name: "Free",
+    name: "Freemium",
     price: "₹0",
     period: "forever",
     description: "Get started with basic expense tracking",
@@ -98,8 +98,8 @@ const plans: PlanCard[] = [
   {
     tier: "pro",
     name: "Pro",
-    price: "₹99",
-    period: "/month",
+    price: "TBD",
+    period: "",
     description: "Full tracking with loans, PDF export & more",
     icon: <Sparkles className="w-6 h-6" />,
     gradient: "from-purple-600 to-violet-500",
@@ -108,8 +108,8 @@ const plans: PlanCard[] = [
   {
     tier: "premium",
     name: "Premium",
-    price: "₹199",
-    period: "/month",
+    price: "TBD",
+    period: "",
     description: "Everything unlimited with priority support",
     icon: <Crown className="w-6 h-6" />,
     gradient: "from-amber-500 to-orange-500",
@@ -222,7 +222,7 @@ export default function Subscription() {
                   </div>
                 ) : plan.tier === "free" ? (
                   <div className="w-full py-3 rounded-2xl bg-secondary text-muted-foreground text-center text-sm font-medium">
-                    Free Forever
+                    Freemium
                   </div>
                 ) : (
                   <button
