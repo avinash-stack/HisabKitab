@@ -16,6 +16,7 @@ export type Database = {
     Tables: {
       debts: {
         Row: {
+          encrypted_payload?: string | null
           amount: number
           created_at: string
           due_date: string | null
@@ -28,6 +29,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          encrypted_payload?: string | null
           amount: number
           created_at?: string
           due_date?: string | null
@@ -40,6 +42,7 @@ export type Database = {
           user_id: string
         }
         Update: {
+          encrypted_payload?: string | null
           amount?: number
           created_at?: string
           due_date?: string | null
@@ -55,6 +58,7 @@ export type Database = {
       }
       expenses: {
         Row: {
+          encrypted_payload?: string | null
           amount: number
           category: string
           created_at: string
@@ -65,6 +69,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          encrypted_payload?: string | null
           amount: number
           category: string
           created_at?: string
@@ -75,6 +80,7 @@ export type Database = {
           user_id: string
         }
         Update: {
+          encrypted_payload?: string | null
           amount?: number
           category?: string
           created_at?: string
