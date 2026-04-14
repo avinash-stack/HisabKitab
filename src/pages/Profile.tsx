@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import {
   LogOut, Plus, Trash2, Tag, Users, UserCircle, Sparkles,
-  ChevronRight, Camera, Wallet, Edit3, X, Crown, Info, HelpCircle, FileText, Shield
+  ChevronRight, Camera, Wallet, Edit3, X, Crown, Info, HelpCircle, FileText, Shield, UserMinus
 } from "lucide-react";
 import { useSubscription } from "@/hooks/useSubscription";
 
@@ -272,6 +272,18 @@ export default function Profile() {
             <Button onClick={handleSaveProfile} disabled={upsertProfile.isPending} className="w-full h-11 gradient-primary text-primary-foreground font-semibold">
               {upsertProfile.isPending ? "Saving..." : "Save Profile"}
             </Button>
+            
+            <div className="pt-3 mt-3 border-t border-border/50">
+               <button onClick={() => navigate("/deletion")} className="w-full flex items-center justify-between p-3.5 bg-destructive/5 border border-destructive/20 hover:bg-destructive/10 rounded-xl transition-colors active:scale-[0.98]">
+                 <div className="flex items-center gap-3">
+                   <div className="w-8 h-8 rounded-lg bg-destructive/10 flex items-center justify-center shrink-0">
+                     <UserMinus className="w-4 h-4 text-destructive opacity-80" />
+                   </div>
+                   <span className="text-sm font-medium text-destructive">Account Deletion</span>
+                 </div>
+                 <ChevronRight className="w-4 h-4 text-destructive/50" />
+               </button>
+            </div>
           </div>
         </div>
       )}
