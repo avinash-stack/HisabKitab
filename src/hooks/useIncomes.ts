@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
 import { toast } from "sonner";
 import { endOfMonth, format, startOfMonth } from "date-fns";
-import { encryptData, decryptData, importKey } from "@/lib/crypto";
+import { encryptData, decryptData, getMasterKey } from "@/lib/crypto";
 
 export type Income = {
   id: string;
@@ -22,12 +22,6 @@ export type IncomeInput = {
   income_date: string;
 };
 
-// Helper: Get key from storage
-async function getMasterKey() {
-  const rawKey = localStorage.getItem("e2e_master_key");
-  if (!rawKey) throw new Error("Encryption key not found. Please run the migration or set up your key.");
-  return await importKey(rawKey);
-}
 
 export function useIncomes(month?: string) {
   const { user } = useAuth();

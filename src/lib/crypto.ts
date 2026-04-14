@@ -104,3 +104,18 @@ export async function decryptData(encryptedString: string, key: CryptoKey): Prom
   const jsonStr = decoder.decode(decryptedData);
   return JSON.parse(jsonStr);
 }
+
+/**
+ * Retrieves the Master Key from LocalStorage.
+ * Automatically generates a new one if it doesn't exist (e.g. fresh installation).
+ */
+export async function getMasterKey(): Promise<CryptoKey> {
+  let rawKey = localStorage.getItem("e2e_master_key");
+  if (!rawKey) {
+    const freshKey = await generateMasterKey();
+    rawKey = await exportKey(freshKey);
+    localStorage.setItem("e2e_master_key", rawKey);
+    return freshKey;
+  }
+  return await importKey(rawKey);
+}
