@@ -3,7 +3,7 @@
 buildscript {
 
     ext {
-        kotlin_version = '2.0.0'
+        kotlin_version = '2.1.20'
     }
 
     repositories {
@@ -12,9 +12,9 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.7.2'
-        classpath 'com.google.gms:google-services:4.4.2'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath libs.gradle
+        classpath libs.google.services
+        classpath libs.kotlin.gradle.plugin
     }
 }
 
@@ -28,8 +28,7 @@ allprojects {
 
     configurations.all {
         resolutionStrategy {
-            force "org.jetbrains.kotlin:kotlin-stdlib:2.0.0"
-            force "org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.0.0"
+            force "org.jetbrains.kotlin:kotlin-stdlib:2.1.20"
         }
     }
 }
