@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import {
   LogOut, Plus, Trash2, Tag, Users, UserCircle, Sparkles,
-  ChevronRight, Camera, Wallet, Edit3, X, Crown
+  ChevronRight, Camera, Wallet, Edit3, X, Crown, Info, HelpCircle, FileText, Shield
 } from "lucide-react";
 import { useSubscription } from "@/hooks/useSubscription";
 
@@ -407,6 +407,44 @@ export default function Profile() {
           </div>
         </div>
       )}
+
+      {/* App & Support Section */}
+      <div className="mt-6">
+        <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-2 pl-2">App & Support</p>
+        <div className="space-y-2">
+          <button onClick={() => navigate("/about")} className="w-full flex items-center gap-3 p-3.5 bg-card border border-border hover:bg-secondary/50 rounded-xl transition-colors active:scale-[0.98]">
+            <div className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center shrink-0">
+              <Info className="w-4 h-4 text-muted-foreground" />
+            </div>
+            <span className="flex-1 text-left text-sm font-medium">About HisabKitab</span>
+            <ChevronRight className="w-4 h-4 text-muted-foreground" />
+          </button>
+          
+          <button onClick={() => navigate("/help")} className="w-full flex items-center gap-3 p-3.5 bg-card border border-border hover:bg-secondary/50 rounded-xl transition-colors active:scale-[0.98]">
+            <div className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center shrink-0">
+              <HelpCircle className="w-4 h-4 text-muted-foreground" />
+            </div>
+            <span className="flex-1 text-left text-sm font-medium">Help & Support</span>
+            <ChevronRight className="w-4 h-4 text-muted-foreground" />
+          </button>
+
+          <button onClick={() => navigate("/terms")} className="w-full flex items-center gap-3 p-3.5 bg-card border border-border hover:bg-secondary/50 rounded-xl transition-colors active:scale-[0.98]">
+            <div className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center shrink-0">
+              <FileText className="w-4 h-4 text-muted-foreground" />
+            </div>
+            <span className="flex-1 text-left text-sm font-medium">Terms of Service</span>
+            <ChevronRight className="w-4 h-4 text-muted-foreground" />
+          </button>
+
+          <button onClick={() => navigate("/privacy")} className="w-full flex items-center gap-3 p-3.5 bg-card border border-border hover:bg-secondary/50 rounded-xl transition-colors active:scale-[0.98]">
+            <div className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center shrink-0">
+              <Shield className="w-4 h-4 text-muted-foreground" />
+            </div>
+            <span className="flex-1 text-left text-sm font-medium">Privacy Policy</span>
+            <ChevronRight className="w-4 h-4 text-muted-foreground" />
+          </button>
+        </div>
+      </div>
 
       {/* Sign Out */}
       <Button

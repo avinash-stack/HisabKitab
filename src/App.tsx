@@ -25,6 +25,10 @@ import AddLoan from "@/pages/AddLoan";
 import AddDebt from "@/pages/AddDebt";
 import Subscription from "@/pages/Subscription";
 import NotFound from "@/pages/NotFound";
+import AboutUs from "@/pages/AboutUs";
+import Help from "@/pages/Help";
+import Terms from "@/pages/Terms";
+import Privacy from "@/pages/Privacy";
 
 const queryClient = new QueryClient();
 
@@ -108,6 +112,10 @@ function AppRoutes() {
         <Route path="/add/loan" element={<AddLoan />} />
         <Route path="/add/debt" element={<AddDebt />} />
         <Route path="/subscription" element={<Subscription />} />
+        <Route path="/about" element={<AboutUs />} />
+        <Route path="/help" element={<Help />} />
+        <Route path="/terms" element={<Terms />} />
+        <Route path="/privacy" element={<Privacy />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <BottomNav />
