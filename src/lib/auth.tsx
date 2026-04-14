@@ -23,17 +23,30 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const ensureProfileRow = async (session: Session | null) => {
+    const uid = session?.user?.id;
+    if (!uid) return;
+    // Create the profile row on first login/sign-up.
+    // Uses upsert so it won't overwrite an existing profile.
+    await supabase
+      .from("profiles")
+      .upsert({ user_id: uid }, { onConflict: "user_id", ignoreDuplicates: true });
+  };
+
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
+      // Fire-and-forget: don't block UI on this.
+      ensureProfileRow(session).catch(() => {});
     });
 
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
+      ensureProfileRow(session).catch(() => {});
     });
 
     return () => subscription.unsubscribe();
