@@ -14,9 +14,6 @@ const DEFAULT_SOURCES = [
   { name: "Salary", icon: "💼" },
   { name: "Freelance", icon: "💻" },
   { name: "Investment", icon: "📈" },
-  { name: "Business", icon: "🏪" },
-  { name: "Rental", icon: "🏠" },
-  { name: "Other", icon: "💰" },
 ];
 
 export { DEFAULT_SOURCES };

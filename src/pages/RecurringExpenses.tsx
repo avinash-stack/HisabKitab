@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useRecurringExpenses, RecurringExpenseInput } from "@/hooks/useRecurringExpenses";
+import { useExpenseCategories } from "@/hooks/useExpenseCategories";
 import PageHeader from "@/components/PageHeader";
 import FormSheet from "@/components/FormSheet";
 import { Button } from "@/components/ui/button";
@@ -8,18 +9,23 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch";
 import { Plus, Trash2, Edit2, CalendarClock } from "lucide-react";
 
-const CATEGORIES = ["Food", "Transport", "Shopping", "Bills", "Entertainment", "Health", "Education", "Other"];
-
 export default function RecurringExpenses() {
   const { data: items, addRecurring, updateRecurring, toggleActive, deleteRecurring } = useRecurringExpenses();
+  const { categories } = useExpenseCategories();
+
+  const categoryNames = useMemo(
+    () => categories.map((c) => c.name),
+    [categories],
+  );
+  const defaultCategory = categoryNames[0] || "Food";
 
   const [open, setOpen] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
-  const [form, setForm] = useState<RecurringExpenseInput>({ amount: 0, category: "Bills", note: "", day_of_month: 1 });
+  const [form, setForm] = useState<RecurringExpenseInput>({ amount: 0, category: "Food", note: "", day_of_month: 1 });
 
   const openAdd = () => {
     setEditId(null);
-    setForm({ amount: 0, category: "Bills", note: "", day_of_month: 1 });
+    setForm({ amount: 0, category: defaultCategory, note: "", day_of_month: 1 });
     setOpen(true);
   };
 
@@ -97,7 +103,7 @@ export default function RecurringExpenses() {
         <Select value={form.category} onValueChange={(v) => setForm({ ...form, category: v })}>
           <SelectTrigger className="h-12 bg-secondary"><SelectValue /></SelectTrigger>
           <SelectContent>
-            {CATEGORIES.map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+            {categoryNames.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
           </SelectContent>
         </Select>
         <Input placeholder="Note (e.g. Netflix, Electricity)" value={form.note || ""} onChange={(e) => setForm({ ...form, note: e.target.value })} className="h-12 bg-secondary" />

@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
+import { useSubscription } from "@/hooks/useSubscription";
 import { toast } from "sonner";
 
 export type ExpenseCategory = {
@@ -20,6 +21,7 @@ export { DEFAULT_CATEGORIES };
 
 export function useExpenseCategories() {
   const { user } = useAuth();
+  const { isPremium, getCustomCategoryLimit } = useSubscription();
   const qc = useQueryClient();
 
   const query = useQuery({
@@ -42,6 +44,18 @@ export function useExpenseCategories() {
 
   const addCategory = useMutation({
     mutationFn: async (input: { name: string; icon: string }) => {
+      const limit = getCustomCategoryLimit();
+      if (!isPremium && limit != null) {
+        const { count, error: countError } = await supabase
+          .from("expense_categories")
+          .select("*", { head: true, count: "exact" })
+          .eq("user_id", user!.id);
+        if (countError) throw countError;
+        if ((count || 0) >= limit) {
+          throw new Error(`Category limit reached (max ${limit}).`);
+        }
+      }
+
       const { error } = await supabase
         .from("expense_categories")
         .insert({ ...input, user_id: user!.id });
